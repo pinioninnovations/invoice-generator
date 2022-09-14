@@ -2,7 +2,7 @@
 
 A simple web application to generate invoices.
 
-**Github page link**: https://cherub7.github.io/Invoice-generator/
+**Github page link**: https://pinioninnovations.github.io/invoice-generator/
 
 ---
 
@@ -19,5 +19,3 @@ A simple web application to generate invoices.
 * Can Export/Import an invoice data
 
 ---
-
-More features in development!
