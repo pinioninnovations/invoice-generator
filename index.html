@@ -11,6 +11,31 @@
         <script src="./external-scripts/materialize.min.js"></script>
     </head>
 
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyAuRpYGd8-JIs88UGDOayyQBzNXDP_dsqM",
+          authDomain: "invoice-generator-2b8be.firebaseapp.com",
+          databaseURL: "https://invoice-generator-2b8be-default-rtdb.firebaseio.com",
+          projectId: "invoice-generator-2b8be",
+          storageBucket: "invoice-generator-2b8be.appspot.com",
+          messagingSenderId: "45256620824",
+          appId: "1:45256620824:web:fda05a8b32c10a11f13c6d",
+          measurementId: "G-9HYNX31XDY"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
+
     <body onload="loadContainer()">
 
         <div id="invoice_form" class="row">
@@ -31,6 +56,7 @@
                             Get started by signing in &#x1f44d;
                         </p>
                         <div id="firebaseui-auth-container"></div>
+                        <div id ="loader">Loading...</div>
                     </div>
                 </div>
             </div>
@@ -48,57 +74,48 @@
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <script type="module">
-            // Import the functions you need from the SDKs you need
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
-            import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-analytics.js";
-            // TODO: Add SDKs for Firebase products that you want to use
-            // https://firebase.google.com/docs/web/setup#available-libraries
-          
-            // Your web app's Firebase configuration
-            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-            const firebaseConfig = {
-              apiKey: "AIzaSyAuRpYGd8-JIs88UGDOayyQBzNXDP_dsqM",
-              authDomain: "invoice-generator-2b8be.firebaseapp.com",
-              databaseURL: "https://invoice-generator-2b8be-default-rtdb.firebaseio.com",
-              projectId: "invoice-generator-2b8be",
-              storageBucket: "invoice-generator-2b8be.appspot.com",
-              messagingSenderId: "45256620824",
-              appId: "1:45256620824:web:fda05a8b32c10a11f13c6d",
-              measurementId: "G-9HYNX31XDY"
-            };
-          
-            // Initialize Firebase
-            const app = initializeApp(firebaseConfig);
-            const analytics = getAnalytics(app);
-        </script>
-    
-        
-        <script>
-            function loadContainer() {
-                var ui = new firebaseui.auth.AuthUI(firebase.auth());
-        
-                ui.start('#firebaseui-auth-container', {
-                    signInSuccessUrl: 'pages/new_invoice.html',
-                    signInOptions: [
-                        // firebase.auth.EmailAuthProvider.PROVIDER_ID,
-                        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-                        // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-                        // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-                        // firebase.auth.GithubAuthProvider.PROVIDER_ID
-                    ],
-                });
-            }
-        
-            firebase.auth().onAuthStateChanged(function(user) {
-                if (user) {
-                    window.location = "pages/home.html";
-                } else {
-                    // none
-                }
-            });
-        </script>
+        </div>      
     </body>
+    <script>
+        function loadContainer() {
+            var ui = new firebaseui.auth.AuthUI(firebase.auth());
+            var uiConfig = {
+                callbacks: {
+                    signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+                    // User successfully signed in.
+                    // Return type determines whether we continue the redirect automatically
+                    // or whether we leave that to developer to handle.
+                    return true;
+                    },
+                    uiShown: function() {
+                    // The widget is rendered.
+                    // Hide the loader.
+                    document.getElementById('loader').style.display = 'none';
+                    }
+                },
+                // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+                signInFlow: 'popup',
+                signInSuccessUrl: 'pages/new_invoice.html',
+                signInOptions: [
+                    // Leave the lines as is for the providers you want to offer your users.
+                    firebase.auth.GoogleAuthProvider.PROVIDER_ID
+                    //firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+                    //firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+                    //firebase.auth.GithubAuthProvider.PROVIDER_ID,
+                    //firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                    //firebase.auth.PhoneAuthProvider.PROVIDER_ID
+                ],
+            };
+    
+            ui.start('#firebaseui-auth-container', uiConfig);
+        }
+    
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                window.location = "pages/home.html";
+            } else {
+                // none
+            }
+        });
+    </script>
 </html>
