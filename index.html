@@ -8,6 +8,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
         <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+        <script src="./external-scripts/materialize.min.js"></script>
     </head>
 
     <script type="module">
@@ -34,6 +35,32 @@
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
     </script>
+
+    
+<script>
+    function loadContainer() {
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+        ui.start('#firebaseui-auth-container', {
+            signInSuccessUrl: 'pages/new_invoice.html',
+            signInOptions: [
+                // firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+                // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+                // firebase.auth.GithubAuthProvider.PROVIDER_ID
+            ],
+        });
+    }
+
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            window.location = "pages/home.html";
+        } else {
+            // none
+        }
+    });
+</script>
 
     <body onload="loadContainer()">
 
@@ -76,31 +103,4 @@
         </div>
 
     </body>
-
-    <script>
-        function loadContainer() {
-            var ui = new firebaseui.auth.AuthUI(firebase.auth());
-
-            ui.start('#firebaseui-auth-container', {
-                signInSuccessUrl: 'pages/new_invoice.html',
-                signInOptions: [
-                    // firebase.auth.EmailAuthProvider.PROVIDER_ID,
-                    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-                    // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-                    // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-                    // firebase.auth.GithubAuthProvider.PROVIDER_ID
-                ],
-            });
-        }
-
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                window.location = "pages/home.html";
-            } else {
-                // none
-            }
-        });
-    </script>
-
-    <script src="./external-scripts/materialize.min.js"></script>
 </html>
