@@ -4,9 +4,9 @@
 
 var db = firebase.firestore();
 //var user = firebase.auth().currentUser.user_id;
-var user = firebase.auth()
-var user_email = user.currentUser.user_email;
-var user_id = user.currentUser.user_id;
+const user = firebase.auth()
+const user_email = user.currentUser.user_email;
+const user_id = user.currentUser.user_id;
 var itemUID = 0;
 
 // retrieve data from Firebase based on user's mail
@@ -119,7 +119,7 @@ function saveItems() {
     //var user_email = document.getElementById('user_email').innerText;
     
     var items_data = getItemsData();
-
+    console.log(user_id)
     db.collection('users').doc(user_id).set({
         mail: user_email,
         data: items_data,
