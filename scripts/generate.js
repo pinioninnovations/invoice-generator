@@ -103,21 +103,21 @@ function generateInvoice(doc, data) {
 
     if (client_name) {
         y_pos += 5;
-        doc.text(15, y_pos, 'Sold To : ' + client_name);
+        doc.text(15, y_pos, 'Sold To:   ' + client_name);
     }
 
     if (invoice_date) {
         y_pos += 5;
-        doc.text(15, y_pos, 'Date      : ' + invoice_date);
+        doc.text(15, y_pos, 'Date:      ' + invoice_date);
     }
 
     if (client_place) {
         y_pos += 5;
-        doc.text(15, y_pos, 'Place     : ' + client_place);
+        doc.text(15, y_pos, 'Place:     ' + client_place);
     }
     if (invoice_msg) {
         y_pos +=5;
-        doc.text(15, y_pos, 'For        : ' + invoice_msg);
+        doc.text(15, y_pos, 'For:       ' + invoice_msg);
     }
     
 
