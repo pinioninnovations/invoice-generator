@@ -120,7 +120,7 @@ function saveItems() {
     
     var items_data = getItemsData();
 
-    db.collection('users').doc(user_id).doc("items").set({
+    db.collection('users').doc(user_id).set({
         mail: user_email,
         data: items_data,
     })
