@@ -39,7 +39,7 @@ function generateHeader(doc, data) {
         element.innerHTML = src;
         
         var imageFormat = src.substring('<img src="data:image/'.length, src.search(";base64"));
-        doc.addImage(element.firstChild, imageFormat, x_pos, y_pos, 59, 32, 'company_logo', 'NONE', 0);
+        doc.addImage(element.firstChild, imageFormat, 80, y_pos, 59, 32, 'company_logo', 'NONE', 0);
         x_pos += 40;
     }
 
@@ -103,20 +103,20 @@ function generateInvoice(doc, data) {
 
     if (client_name) {
         y_pos += 5;
-        doc.text(15, y_pos, 'To    : ' + client_name);
+        doc.text(15, y_pos, 'Sold To : ' + client_name);
     }
 
     if (invoice_date) {
         y_pos += 5;
-        doc.text(15, y_pos, 'Date : ' + invoice_date);
+        doc.text(15, y_pos, 'Date    : ' + invoice_date);
     }
 
     if (client_place) {
         y_pos += 5;
-        doc.text(15, y_pos, 'Place: ' + client_place);
+        doc.text(15, y_pos, 'Place   : ' + client_place);
     }
 
-    doc.text(15, y_pos + 10, '     ' + invoice_msg);
+    doc.text(15, y_pos + 10, 'For     : ' + invoice_msg);
 
     generatePurchaseList(doc, data);
 }
