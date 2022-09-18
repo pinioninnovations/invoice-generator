@@ -39,7 +39,7 @@ function generateHeader(doc, data) {
         element.innerHTML = src;
         
         var imageFormat = src.substring('<img src="data:image/'.length, src.search(";base64"));
-        doc.addImage(element.firstChild, imageFormat, x_pos, y_pos, 117, 63, 'company_logo', 'NONE', 0);
+        doc.addImage(element.firstChild, imageFormat, x_pos, y_pos, 59, 32, 'company_logo', 'NONE', 0);
         x_pos += 40;
     }
 
