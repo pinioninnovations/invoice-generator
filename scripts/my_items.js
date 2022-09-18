@@ -4,9 +4,8 @@
 
 var db = firebase.firestore();
 //var user = firebase.auth().currentUser.user_id;
-const user = firebase.auth()
-const user_email = user.currentUser.user_email;
-const user_id = user.currentUser.user_id;
+const user_email = firebase.auth().currentUser.user_email
+const user_id = firebase.auth().currentUser.user_id;
 var itemUID = 0;
 
 // retrieve data from Firebase based on user's mail
