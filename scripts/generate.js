@@ -113,7 +113,7 @@ function generateInvoice(doc, data) {
 
     if (client_place) {
         y_pos += 5;
-        doc.text(15, y_pos, 'Place     : ' + client_place);
+        doc.text(15, y_pos, 'Place     : ' + client_place);
     }
     if (invoice_msg) {
         y_pos +=5;
