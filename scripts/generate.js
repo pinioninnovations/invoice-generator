@@ -39,8 +39,8 @@ function generateHeader(doc, data) {
         element.innerHTML = src;
         
         var imageFormat = src.substring('<img src="data:image/'.length, src.search(";base64"));
-        doc.addImage(element.firstChild, imageFormat, 80, y_pos, 59, 32, 'company_logo', 'NONE', 0);
-        x_pos += 40;
+        doc.addImage(element.firstChild, imageFormat, 70, y_pos, 59, 32, 'company_logo', 'NONE', 0);
+        //x_pos += 40;
     }
 
     doc.setFontSize(15);
@@ -115,8 +115,11 @@ function generateInvoice(doc, data) {
         y_pos += 5;
         doc.text(15, y_pos, 'Place   : ' + client_place);
     }
-
-    doc.text(15, y_pos + 10, 'For     : ' + invoice_msg);
+    if (invoice_msg) {
+        y_pos +=5;
+        doc.text(15, y_pos, 'For     : ' + invoice_msg);
+    }
+    
 
     generatePurchaseList(doc, data);
 }
