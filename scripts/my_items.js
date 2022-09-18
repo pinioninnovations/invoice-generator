@@ -120,7 +120,7 @@ function saveItems() {
     const user_id = firebase.auth().currentUser.user_id;
     var items_data = getItemsData();
     console.log(user_id)
-    db.collection('users').doc(user_email).set({
+    db.collection('users').doc('test').set({
         mail: user_email,
         data: items_data,
     })
