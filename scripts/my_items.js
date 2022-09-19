@@ -12,7 +12,7 @@ function retrieveItemsFromFirestore() {
     var user_id = firebase.auth().currentUser.uid;
     //console.log(user_email)
     //console.log(user_id)
-    db.collection("/users/${user_id}/items")
+    db.collection("/users/${user_id}")
     .get()
     .then(function(doc) {
         if (doc.exists) {
