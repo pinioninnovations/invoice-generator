@@ -10,7 +10,7 @@ var itemUID = 0;
 // retrieve data from Firebase based on user's mail
 function retrieveItemsFromFirestore() {
     var user_email = firebase.auth().currentUser.email;
-    var user_id = firebase.auth().currentUser.user_id;
+    var user_id = firebase.auth().currentUser.uid;
     console.log(user_email)
     console.log(user_id)
     db.collection("/users/${user_email}/items")
