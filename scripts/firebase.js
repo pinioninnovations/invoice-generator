@@ -7,8 +7,8 @@ var db = firebase.firestore();
 // store the json as string and reconstruct pdf when user wants to download
 function sendToFirestore(data) {
     var user_email = document.getElementById('user_email').innerText;
-
-    db.collection('data').add({
+    var user_id = firebase.auth().currentUser.uid;
+    db.collection('/users/${user_id}/').add({
         mail: user_email,
         data: data,
         time: firebase.firestore.Timestamp.fromDate(new Date())
