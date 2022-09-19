@@ -9,11 +9,10 @@ var itemUID = 0;
 
 // retrieve data from Firebase based on user's mail
 function retrieveItemsFromFirestore() {
-    var user_email = firebase.auth().currentUser.email;
     var user_id = firebase.auth().currentUser.uid;
-    console.log(user_email)
-    console.log(user_id)
-    db.collection("/users/${user_email}/items")
+    //console.log(user_email)
+    //console.log(user_id)
+    db.collection("/users/${user_id}/items")
     .get()
     .then(function(doc) {
         if (doc.exists) {
@@ -118,10 +117,10 @@ function getItemsData() {
 
 function saveItems() {
     var user_email = document.getElementById('user_email').innerText;
-    const user_id = firebase.auth().currentUser.user_id;
+    const user_id = firebase.auth().currentUser.uid;
     var items_data = getItemsData();
     console.log(user_id)
-    db.collection('users').doc('test').set({
+    db.collection('users').doc(user_id).set({
         mail: user_email,
         data: items_data,
     })
