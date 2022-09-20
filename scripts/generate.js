@@ -117,7 +117,7 @@ function generateInvoice(doc, data) {
     }
     if (invoice_msg) {
         y_pos +=5;
-        doc.text(15, y_pos, 'For: ' + invoice_msg);
+        doc.text(15, y_pos, 'Invoice: ' + invoice_msg);
     }
     
 
