@@ -119,14 +119,17 @@ function saveItems() {
     var user_email = document.getElementById('user_email').innerText;
     const user_id = firebase.auth().currentUser.uid;
     var items_data = getItemsData();
-    console.log(user_id)
-    db.collection('users').doc(user_id).collection('items').set({
-        data: items_data
-    })
-    .then(function(docRef) {
-        alert("Successfully updated items list.");
-    })
-    .catch(function(error) {
-        alert("Error updating items list.");
-    });
+    console.log(items_data)
+    for (const item of items_data){
+        db.collection('users').doc(user_id).collection('items').set({
+            item.Name: item
+        })
+        .then(function(docRef) {
+            alert("Successfully updated items list.");
+        })
+        .catch(function(error) {
+            alert("Error updating items list.");
+        });
+    }
+
 }
