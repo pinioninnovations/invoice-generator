@@ -17,11 +17,11 @@ function getPaymentStatus(balance, doc_id) {
 
 // retrieve data from Firebase based on user's mail
 function retrieveFromFirestore() {
-    var user_email = firebase.auth().currentUser.email;
-    db.collection("data").where("mail", "==", user_email)
-    .get()
-    .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
+    var user_id = firebase.auth().currentUser.uid;
+    let path = "users/" + user_id + "/invoices";
+    db.collection(path).get()
+    .then(function(invoices) {
+        invoices.forEach(function(doc) {
             var recv_data = doc.data();
             var invoice = JSON.parse(recv_data['data']);
 
@@ -100,7 +100,9 @@ function editInvoiceBalance(doc_id) {
 
 function updateInvoiceBalance(doc_id, new_balance) {
     var user_email = document.getElementById('user_email').innerText;
-    var docRef = db.collection("data").doc(doc_id);
+    var user_id = firebase.auth().currentUser.uid;
+    let path = "users/" + user_id + "/invoices";
+    var docRef = db.collection(path).doc(doc_id);
 
     docRef.get().then(function(doc) {
         if (doc.exists) {
@@ -140,7 +142,7 @@ function updateInvoiceBalance(doc_id, new_balance) {
             data['invoice_balance'] = balance;
             data['purchase_list']['payment_data'][1]['Total'] = balance;
 
-            db.collection('data').doc(doc_id).set({
+            db.collection(path).doc(doc_id).set({
                 data: JSON.stringify(data),
                 mail: user_email,
                 time: firebase.firestore.Timestamp.fromDate(new Date())
@@ -161,7 +163,9 @@ function updateInvoiceBalance(doc_id, new_balance) {
 }
 
 function previewInvoice(doc_id) {
-    var docRef = db.collection("data").doc(doc_id);
+    var user_id = firebase.auth().currentUser.uid;
+    let path = "users/" + user_id + "/invoices";
+    var docRef = db.collection(path).doc(doc_id);
 
     docRef.get().then(function(doc) {
         if (doc.exists) {
@@ -176,7 +180,9 @@ function previewInvoice(doc_id) {
 }
 
 function downloadInvoice(doc_id) {
-    var docRef = db.collection("data").doc(doc_id);
+    var user_id = firebase.auth().currentUser.uid;
+    let path = "users/" + user_id + "/invoices";
+    var docRef = db.collection(path).doc(doc_id);
 
     docRef.get().then(function(doc) {
         if (doc.exists) {
@@ -191,7 +197,9 @@ function downloadInvoice(doc_id) {
 }
 
 function exportHistoryInvoice(doc_id) {
-    var docRef = db.collection("data").doc(doc_id);
+    var user_id = firebase.auth().currentUser.uid;
+    let path = "users/" + user_id + "/invoices";
+    var docRef = db.collection(path).doc(doc_id);
 
     docRef.get().then(function(doc) {
         if (doc.exists) {
@@ -206,7 +214,9 @@ function exportHistoryInvoice(doc_id) {
 }
 
 function deleteInvoice(doc_id)  {
-    db.collection("data").doc(doc_id).delete().then(function() {
+    var user_id = firebase.auth().currentUser.uid;
+    let path = "users/" + user_id + "/invoices";
+    db.collection(path).doc(doc_id).delete().then(function() {
         document.getElementById('del-' + doc_id).parentElement.parentElement.remove();
     }).catch(function(error) {
         alert("Error removing document.");

@@ -92,7 +92,7 @@ function generateInvoice(doc, data) {
 
     client_name = data['client_name'];
     client_tel = data['client_tel'];
-    client_place = data['client_place'];
+    client_email = data['client_email'];
     invoice_date = data['invoice_date'];
     invoice_msg = data['invoice_msg'];
 
@@ -111,13 +111,9 @@ function generateInvoice(doc, data) {
         doc.text(15, y_pos, 'Date: ' + invoice_date);
     }
 
-    if (client_place) {
-        y_pos += 5;
-        doc.text(15, y_pos, 'Place: ' + client_place);
-    }
     if (invoice_msg) {
         y_pos +=5;
-        doc.text(15, y_pos, 'Invoice: ' + invoice_msg);
+        doc.text(15, y_pos, 'Invoice#: ' + invoice_msg);
     }
     
 
@@ -142,7 +138,7 @@ function generatePurchaseList(doc, data) {
         items.push([item.Name, 
                     item.Qty, 
                     item.Cost + ' (+' + financial(item.Qty * item.Cost) + ')', 
-                    item.Tax + '% (+'+ financial((item.Tax / 100.0) * (item.Qty * item.Cost)) +')', 
+                    item.Tax + '% (+'+ financial((item.Tax / 100.0) * (item.Qty * (item.Cost - (item.Cost * item.Discount/100)))) +')', 
                     item.Discount + '% (-'+ financial((item.Discount / 100.0) * (item.Qty * item.Cost)) +')', 
                     financial(item.Total)]);
     }

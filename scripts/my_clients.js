@@ -8,26 +8,20 @@ var clientUID = 0;
 
 // retrieve data from Firebase based on user's mail
 function retrieveUsersFromFirestore() {
-    var user_email = firebase.auth().currentUser.email;
-    db.collection("clients").doc(user_email)
-    .get()
-    .then(function(doc) {
-        if (doc.exists) {
-            var recv_data = doc.data();
-            var data = JSON.parse(recv_data['data']);
-
-            var clients = data['clients'];
-            var count = clients.length;
-
-            for (var index = 0; index < count; index++) {
-                var client = clients[index];
-                addClient(client);
+    var user_id = firebase.auth().currentUser.uid;
+    let path = "users/" + user_id + "/clients"
+    db.collection(path).get()
+    .then(function(docs) {
+        docs.forEach(function(doc) {
+            if (doc.exists) {
+                var recv_data = doc.data();
+                addClient(recv_data['client']);
             }
-        }
-        else {
-            alert("You have no clients saved in 'My Clients'");
-        }
+            else {
+                alert("You have no clients saved in 'My Clients'");
+            }
 
+        })
         // removing loading animation
         var element = document.getElementById('preloader');
         element.parentNode.removeChild(element);
@@ -55,12 +49,12 @@ function addNewClient() {
     clientUID++;
 
     var client_name = "<td><input type='text' placeholder='Client Name'></td>";
-    var client_number = "<td><input type='number' placeholder='Client Number'></td>";
-    var client_place = "<td><input type='text' placeholder='Place'></td>";
+    var client_number = "<td><input type='text' placeholder='Client Number'></td>";
+    var client_email = "<td><input type='text' placeholder='Client Email'></td>";
     var actions = '<td><a class="btn-floating btn-medium waves-effect waves-light black" onclick="javascript:removeClient(\'' + 
     clientId + '\'); return false;"><i class="material-icons left">delete</i></td>';
 
-    var entry_data = client_name + client_number + client_place + actions;
+    var entry_data = client_name + client_number + client_email + actions;
 
     var client_entry = document.createElement("tr");
     client_entry.id = clientId;
@@ -74,12 +68,12 @@ function addClient(client) {
     clientUID++;
 
     var client_name = "<td><input type='text' value='" + client['client_name'] + "'></td>";
-    var client_number = "<td><input type='number' value='" + client['client_tel'] + "'></td>";
-    var client_place = "<td><input type='text' value='" + client['client_place'] + "'></td>";
+    var client_number = "<td><input type='text' value='" + client['client_tel'] + "'></td>";
+    var client_email = "<td><input type='text' value='" + client['client_email'] + "'></td>";
     var actions = '<td><a class="btn-floating btn-medium waves-effect waves-light black" onclick="javascript:removeClient(\'' + 
     clientId + '\'); return false;"><i class="material-icons left">delete</i></td>';
 
-    var entry_data = client_name + client_number + client_place + actions;
+    var entry_data = client_name + client_number + client_email + actions;
 
     var client_entry = document.createElement("tr");
     client_entry.id = clientId;
@@ -89,7 +83,6 @@ function addClient(client) {
 }
 
 function getClientsData() {
-    var data = {};
 
     var clients_div = document.getElementById('user_clients');
     var clients = [];
@@ -100,27 +93,33 @@ function getClientsData() {
         // clients div -> tr -> td -> input element
         client.client_name = clients_div.children[i].children[0].children[0].value;
         client.client_tel = clients_div.children[i].children[1].children[0].value;
-        client.client_place = clients_div.children[i].children[2].children[0].value;
+        client.client_email = clients_div.children[i].children[2].children[0].value;
 
         clients.push(client);
     }
-
-    data['clients'] = clients;
-    return JSON.stringify(data);
+    return clients
+    //return JSON.stringify(data);
 }
 
 function saveClients() {
-    var user_email = document.getElementById('user_email').innerText;
+    const user_id = firebase.auth().currentUser.uid;
     var clients_data = getClientsData();
 
-    db.collection('clients').doc(user_email).set({
-        mail: user_email,
-        data: clients_data,
-    })
-    .then(function(docRef) {
-        alert("Successfully updated clients list.");
-    })
-    .catch(function(error) {
-        alert("Error updating clients list.");
-    });
+    let i = 0;
+    let last = clients_data.length - 1;
+    for (const client of clients_data){
+        console.log(client)
+        const name = client['client_name'];
+        db.collection('users').doc(user_id).collection('clients').doc(name).set({
+            client
+        })
+        .catch(function(error) {
+            alert("Error updating item " + name);
+        });
+        if (i == last) {
+            alert("Successfully updated items list.");
+        }
+        i++;
+    }
+
 }

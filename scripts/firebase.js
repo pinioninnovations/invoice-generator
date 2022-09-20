@@ -8,7 +8,7 @@ var db = firebase.firestore();
 function sendToFirestore(data) {
     var user_email = document.getElementById('user_email').innerText;
     var user_id = firebase.auth().currentUser.uid;
-    db.collection('users').add({
+    db.collection('users').doc(user_id).collection('invoices').add({
         mail: user_email,
         data: data,
         time: firebase.firestore.Timestamp.fromDate(new Date())
@@ -22,30 +22,22 @@ function sendToFirestore(data) {
 }
 
 function retrieveUserItemsData() {
-    var user_email = firebase.auth().currentUser.email;
-
-    db.collection("items").doc(user_email)
-    .get()
-    .then(function(doc) {
-        if (doc.exists) {
-            var recv_data = doc.data();
-            var data = JSON.parse(recv_data['data']);
-
-            var items = data['items'];
-            var count = items.length;
-
-            for (var index = 0; index < count; index++) {
-                var item = items[index];
-                item.Qty = 1;
-
+    var user_id = firebase.auth().currentUser.uid;
+    let path = "users/" + user_id + "/items"
+    db.collection(path).get()
+    .then(function(docs) {
+        docs.forEach(function(doc) {
+            if (doc.exists) {
+                var recv_data = doc.data();
+                var item = recv_data['item']
                 var key = item['Name'];
                 itemData[key] = item;
                 itemTerms.push(key);
             }
-        }
-        else {
+            else {
 
-        }
+            }
+        })
     })
     .catch(function(error) {
         // alert("Error fetching your items data.");
@@ -53,29 +45,22 @@ function retrieveUserItemsData() {
 }
 
 function retrieveUserClientsData() {
-    var user_email = firebase.auth().currentUser.email;
-
-    db.collection("clients").doc(user_email)
-    .get()
-    .then(function(doc) {
-        if (doc.exists) {
-            var recv_data = doc.data();
-            var data = JSON.parse(recv_data['data']);
-
-            var clients = data['clients'];
-            var count = clients.length;
-
-            for (var index = 0; index < count; index++) {
-                var client = clients[index];
-
+    var user_id = firebase.auth().currentUser.uid;
+    let path = "users/" + user_id + "/clients"
+    db.collection(path).get()
+    .then(function(docs) {
+        docs.forEach(function(doc) {
+            if (doc.exists) {
+                var recv_data = doc.data();
+                var client = recv_data['client']
                 var key = client['client_name'];
                 clientData[key] = client;
                 clientTerms.push(key);
             }
-        }
-        else {
+            else {
 
-        }
+            }
+        })
     })
     .catch(function(error) {
         // alert("Error fetching your clients data.");

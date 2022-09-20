@@ -24,10 +24,10 @@ function addNewItem(item) {
     itemId++;
     var html = '<div class="row">' +
                 '<div class="col s3"><input type="text" value="' + item['Name'] + '"/></div>' + 
-                '<div class="col s2"><input type="number" value="' + item['Qty'] + '"/></div>' + 
-                '<div class="col s2"><input type="number" value="' + item['Cost'] + '"/></div>' +
-                '<div class="col s2"><input type="number" min="0" max="100" value="' + item['Tax'] + '"/></div>' +
-                '<div class="col s2"><input type="number" min="0" max="100" value="' + item['Discount'] + '"/></div>' +
+                '<div class="col s2"><input type="number" placeholder="Item count"' + item['Qty'] + '"/></div>' + 
+                '<div class="col s2"><input type="number" placeholder="Item cost" value="' + item['Cost'] + '"/></div>' +
+                '<div class="col s2"><input type="number" min="0" max="100" placeholder="Tax % value="' + item['Tax'] + '"/></div>' +
+                '<div class="col s2"><input type="number" min="0" max="100" placeholder="Discount % value="' + item['Discount'] + '"/></div>' +
                 '<div class="col s1"><a class="btn-floating btn-medium waves-effect waves-light black" onclick="javascript:removeElement(\'item-' + 
                 itemId + '\'); return false;"><i class="material-icons">remove</i>Remove</a></div></div>';
     addElement('items', 'p', 'item-' + itemId, html);
@@ -35,7 +35,7 @@ function addNewItem(item) {
 
 // function to autocomplete client details
 function fillClientDetails(client) {
-    var keys = ['client_name', 'client_tel', 'client_place'];
+    var keys = ['client_name', 'client_tel', 'client_email'];
 
     for (var i = 0; i < keys.length; i++)
         document.getElementById(keys[i]).value = client[keys[i]];
@@ -126,7 +126,7 @@ function uploadImage() {
 }
 
 /**************************************************************************************************
- * Mathods to generate json from the document
+ * Methods to generate json from the document
  **************************************************************************************************/
 
 // function to iterate and store purchases data as json
@@ -146,7 +146,7 @@ function getPurchasesData() {
         item.Cost = items_div.children[i].children[0].children[2].children[0].value;
         item.Tax = items_div.children[i].children[0].children[3].children[0].value;
         item.Discount = items_div.children[i].children[0].children[4].children[0].value;
-        item.Total = (item.Qty * (item.Cost * (1 + item.Discount/100))) * (1 + item.Tax/100.0);
+        item.Total = (item.Qty * (item.Cost * (1 - item.Discount/100))) * (1 + item.Tax/100.0);
 
         total_cost += item.Total;
         items.push(item);
@@ -205,7 +205,7 @@ function getInvoiceData() {
     var data = {};
 
     var data_keys = ['company_name', 'company_email', 'company_addr', 'company_web', 'company_tel',
-                     'client_name', 'client_tel', 'client_place', 'invoice_date', 'invoice_msg', 'invoice_paid_amount'];
+                     'client_name', 'client_tel', 'client_email', 'invoice_date', 'invoice_msg', 'invoice_paid_amount'];
 
     for (var i = 0; i < data_keys.length; i++) {
         data[data_keys[i]] = document.getElementById(data_keys[i]).value;
