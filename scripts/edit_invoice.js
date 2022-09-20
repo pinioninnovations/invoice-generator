@@ -1,3 +1,5 @@
+var db = firebase.firestore();
+
 window.onload = function() {
     var fileInput = document.getElementById('company_logo');
     var fileDisplayArea = document.getElementById('logo_display');
@@ -27,8 +29,10 @@ window.onload = function() {
             alert("File not supported!");
         }
     });
-
-    fillDetails();
+    setTimeout(() => {
+        fillDetails();
+    }, 1000);
+        
 
     calendar = M.Datepicker.init(document.getElementById('invoice_date'), {});
 }
@@ -205,7 +209,7 @@ function getInvoiceData() {
     var data = {};
 
     var data_keys = ['company_name', 'company_email', 'company_addr', 'company_web', 'company_tel',
-                     'client_name', 'client_tel', 'client_place', 'invoice_date', 'invoice_msg', 'invoice_paid_amount'];
+                     'client_name', 'client_tel', 'client_email', 'invoice_date', 'invoice_msg', 'invoice_paid_amount'];
 
     for (var i = 0; i < data_keys.length; i++) {
         data[data_keys[i]] = document.getElementById(data_keys[i]).value;
