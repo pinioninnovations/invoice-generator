@@ -12,7 +12,7 @@ function retrieveItemsFromFirestore() {
     var user_id = firebase.auth().currentUser.uid;
     //console.log(user_email)
     //console.log(user_id)
-    db.collection("/users/${user_id}/items")
+    db.collection(db, "/users/${user_id}/items")
     .get()
     .then(function(doc) {
         if (doc.exists) {
@@ -116,7 +116,6 @@ function getItemsData() {
 }
 
 function saveItems() {
-    var user_email = document.getElementById('user_email').innerText;
     const user_id = firebase.auth().currentUser.uid;
     var items_data = getItemsData();
     console.log(items_data)
