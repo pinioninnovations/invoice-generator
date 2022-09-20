@@ -146,7 +146,7 @@ function getPurchasesData() {
         item.Cost = items_div.children[i].children[0].children[2].children[0].value;
         item.Tax = items_div.children[i].children[0].children[3].children[0].value;
         item.Discount = items_div.children[i].children[0].children[4].children[0].value;
-        item.Total = (item.Qty * item.Cost) * (1 + ((item.Tax - item.Discount) / 100.0));
+        item.Total = (item.Qty * (item.Cost * (1 + item.Discount/100))) * (1 + item.Tax/100.0);
 
         total_cost += item.Total;
         items.push(item);
