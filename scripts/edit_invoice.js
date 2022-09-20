@@ -36,8 +36,9 @@ window.onload = function() {
 function fillDetails() {
     // get id of the doc from url
     let doc_id = document.location.search.replace(/^.*?\=/,'');
-
-    let docRef = db.collection("data").doc(doc_id);
+    var user_id = firebase.auth().currentUser.uid;
+    let path = "users/" + user_id + "/invoices";
+    let docRef = db.collection(path).doc(doc_id);
 
     docRef.get().then(function(doc) {
         if (doc.exists) {
@@ -60,14 +61,14 @@ function saveDetails() {
     var user_email = userEmail;
     // get id of the doc from url
     let doc_id = document.location.search.replace(/^.*?\=/,'');
-
-    var docRef = db.collection("data").doc(doc_id);
+    var user_id = firebase.auth().currentUser.uid;
+    let path = "users/" + user_id + "/invoices";
+    var docRef = db.collection(path).doc(doc_id);
 
     docRef.get().then(function(doc) {
         if (doc.exists) {
             var data = getInvoiceData();
-
-            db.collection('data').doc(doc_id).set({
+            db.collection(path).doc(doc_id).set({
                 data: JSON.stringify(data),
                 mail: user_email,
                 time: firebase.firestore.Timestamp.fromDate(new Date())
@@ -118,7 +119,7 @@ function addElement(parentId, elementTag, elementId, html) {
     p.appendChild(newElement);
 }
 
-// removes an item from the items division
+//removes an item from the items division
 function removeElement(elementId) {
     var element = document.getElementById(elementId);
     element.parentNode.removeChild(element);
