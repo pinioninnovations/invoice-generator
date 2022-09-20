@@ -8,7 +8,7 @@ var db = firebase.firestore();
 function sendToFirestore(data) {
     var user_email = document.getElementById('user_email').innerText;
     var user_id = firebase.auth().currentUser.uid;
-    db.collection('/users/${user_id}/').add({
+    db.collection('/users/$').add({
         mail: user_email,
         data: data,
         time: firebase.firestore.Timestamp.fromDate(new Date())
